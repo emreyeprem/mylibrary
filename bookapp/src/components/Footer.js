@@ -10,7 +10,7 @@ export class Footer extends Component {
           //
           // <div className="footer-dark bg-dark text-white footer-container">
           //     <footer>
-                  <div className="containerfooter">
+                  <div style={this.props.headerStyle} className="containerfooter">
                       <p className="copyright">Copyright© 2018</p>
                   </div>
           //     </footer>

@@ -31,7 +31,7 @@ export class AllBooks extends Component {
   }).then((response) =>{
     let arr = this.state.books
     let newarr = arr.filter(function(book){
-      return each.id != book.id
+      return each.id !== book.id
     })
     this.setState({
       books:newarr
