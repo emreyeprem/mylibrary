@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { setAuthenticationToken } from '../utils'
+import axios from 'axios'
+import {Link, NavLink} from 'react-router-dom'
 
 
 export class AllBooks extends Component {
@@ -15,14 +18,17 @@ export class AllBooks extends Component {
        }
 
        componentDidMount = ()=>{
-         fetch('http://localhost:3050/api/getBooks').then((response)=>{
-           return response.json()}).then((json)=>{
-             console.log(json)
-             this.setState({
-               books: json
-             })
+         let token = localStorage.getItem('jsonwebtoken')
 
-           })
+         setAuthenticationToken(token)
+         axios.get("http://localhost:3050/api/getBooks").then((res)=> {
+           console.log(res.data)
+           this.setState({
+              books: res.data
+              })
+         }).catch((error)=>{
+           this.props.history.push('/login')
+         })
          }
 
         deleteBook = (each) =>{
@@ -66,6 +72,8 @@ export class AllBooks extends Component {
      </div>
     })
     return (
+
+
       <div>
       <div className="maindiv">
        {books}
@@ -74,6 +82,7 @@ export class AllBooks extends Component {
       <button onClick={this.addBookButton} className="addButton btn btn-warning">Add Book</button>
 
       </div>
+
     )
   }
 

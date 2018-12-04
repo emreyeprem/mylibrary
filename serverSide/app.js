@@ -13,37 +13,24 @@ app.use(cors())
 app.use(bodyParser.json())
 //-----------------to enable CORS-------
 app.use(function(req, res, next) {
-
-  res.header("Access-Control-Allow-Headers: Authorization")
+  //
+  // res.header("Access-Control-Allow-Headers: Authorization")
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Headers", "Origin, Authorization,X-Requested-With, Content-Type, Accept");
   next();
 });
 
 app.listen(PORT, function(){
   console.log('Server is running...')
 })
-//-------------------------------------------
-app.post('/addBook',function(req,res){
-  let title = req.body.title
-  let author= req.body.author
-  let category =req.body.category
-  let year = req.body.year
-  let imageUrl = req.body.imageUrl
 
-db.none('INSERT INTO books (booktitle,publisheddate,imageurl,category,author) VALUES ($1,$2,$3,$4,$5)',[title,year,imageUrl,category,author]).then(function(){
-  res.json({success: true})
-})
-
-})
 //--------middleware------------------
 function authenticate(req,res,next) {
 
   // authorization should be lower case
   let authorizationHeader = req.headers["authorization"]
 
-  console.log(authorizationHeader)
 
   if(!authorizationHeader) {
     res.status(400).json({error: 'Authorization failed!'})
@@ -56,9 +43,9 @@ function authenticate(req,res,next) {
   jwt.verify(token,'somesecretkey',function(error,decoded){
 
     if(decoded){
-      let email = decoded.email
+      userId = decoded.id
 
-      db.one('SELECT id,email,password FROM users WHERE email = $1',[email]).then((response)=>{
+      db.one('SELECT id,email,password FROM users WHERE id = $1',[userId]).then((response)=>{
         next()
       }).catch((error)=>{
         res.status(400).json({error: 'User does not exist!'})
@@ -72,12 +59,30 @@ function authenticate(req,res,next) {
 
 }
 //----------------------------------------
+
+app.post('/addBook',function(req,res){
+  let title = req.body.title
+  let author= req.body.author
+  let category =req.body.category
+  let year = req.body.year
+  let imageUrl = req.body.imageUrl
+
+db.none('INSERT INTO books (booktitle,publisheddate,imageurl,category,author,userid) VALUES ($1,$2,$3,$4,$5,$6)',[title,year,imageUrl,category,author,userId]).then(function(){
+  res.json({success: true})
+})
+
+})
+//-------------------------------
+
+// /api/users/23/books
+
 app.get('/api/getBooks',authenticate,function(req,res){
-  db.any('SELECT id,booktitle,publisheddate,imageurl,category,author FROM books').then(function(response){
+  db.any('SELECT id,booktitle,publisheddate,imageurl,category,author FROM books WHERE userid = $1',[userId]).then(function(response){
       res.json(response)
 
   })
 })
+
 app.delete('/delete-book/:id',function(req,res){
   let bookId = req.params.id
 
@@ -93,7 +98,7 @@ app.post('/updateBook/:id',function(req,res){
   let imageUrl = req.body.imageUrl
   let category = req.body.category
   let publishedDate = req.body.publisheddate
-db.none('UPDATE books SET booktitle=$1,author=$2,publisheddate=$3,imageurl=$4,category=$5 WHERE id = $6',[title,author,publishedDate,imageUrl,category,id]).then(()=>{
+db.none('UPDATE books SET booktitle=$1,author=$2,publisheddate=$3,imageurl=$4,category=$5,userid=$6 WHERE id = $7',[title,author,publishedDate,imageUrl,category,userId,id]).then(()=>{
   console.log('update is successful')
   res.json({success:true})
 })
@@ -134,7 +139,7 @@ db.one('SELECT id,email,password FROM users WHERE email = $1',[email]).then((res
           // password match
 
           // create a token
-          const token = jwt.sign({ email : response.email },"somesecretkey")
+          const token = jwt.sign({ id : response.id },"somesecretkey")
 
           // send back the token to the user
           res.json({token: token})

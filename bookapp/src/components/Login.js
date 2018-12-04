@@ -41,11 +41,13 @@ export class Login extends Component {
          message : response.data
        })
      }  else {
+
        localStorage.setItem('jsonwebtoken',response.data.token)
      // put the token in the request header
     setAuthenticationToken(response.data.token)
 
       this.props.history.push('/')
+
      }
 
 

@@ -26,12 +26,37 @@ const showHeaderStyle = {
 }
 
 export class BaseLayout extends Component {
+   constructor(props){
+     super(props)
+     this.state={
+      isAuthenticated : false
+     }
+
+   }
+
+   componentDidMount() {
+
+     let token = localStorage.getItem('jsonwebtoken')
+     console.log(token)
+     if(token){
+       this.setState({
+         isAuthenticated : true
+       })
+
+
+     } else{
+       this.setState({
+         isAuthenticated : false
+       })
+
+     }
+
+   }
 
   render() {
 
-    let isAuthenticated = false
 
-    let headerStyle = isAuthenticated ? showHeaderStyle : hideHeaderStyle
+    let headerStyle = this.state.isAuthenticated ? showHeaderStyle : hideHeaderStyle
 
     return (
 
