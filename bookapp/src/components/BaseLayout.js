@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {AddBook} from './AddBook'
-import {AllBooks} from './AllBooks'
-import {Footer} from './Footer'
-import {Header} from './Header'
+import AddBook from './AddBook'
+import AllBooks from './AllBooks'
+import Footer from './Footer'
+import Header from './Header'
 import {UpdateBook} from './UpdateBook'
 import {Login} from './Login'
 import {Register} from './Register'
@@ -14,56 +14,37 @@ import '../vendor/animate/animate.css'
 import '../vendor/css-hamburgers/hamburgers.min.css'
 import '../css/util.css'
 import '../css/main.css'
+import { connect } from 'react-redux'
 
 
 
-const hideHeaderStyle = {
-  display: 'none'
-}
+// const hideHeaderStyle = {
+//   display: 'none'
+// }
+//
+// const showHeaderStyle = {
+//   display: 'block'
+// }
 
-const showHeaderStyle = {
-  display: 'block'
-}
-
-export class BaseLayout extends Component {
+class BaseLayout extends Component {
    constructor(props){
      super(props)
-     this.state={
-      isAuthenticated : false
-     }
+
 
    }
 
-   componentDidMount() {
-
-     let token = localStorage.getItem('jsonwebtoken')
-     console.log(token)
-     if(token){
-       this.setState({
-         isAuthenticated : true
-       })
-
-
-     } else{
-       this.setState({
-         isAuthenticated : false
-       })
-
-     }
-
-   }
 
   render() {
 
 
-    let headerStyle = this.state.isAuthenticated ? showHeaderStyle : hideHeaderStyle
+   //let headerStyle = this.props.isAuthenticated ? showHeaderStyle : hideHeaderStyle
 
     return (
 
       <div>
-          <Header headerStyle = {headerStyle} />
+          <Header/>
               {this.props.children}
-          <Footer headerStyle = {headerStyle}/>
+          <Footer/>
 
       </div>
 
@@ -71,3 +52,6 @@ export class BaseLayout extends Component {
   }
 
 }
+
+
+export default BaseLayout

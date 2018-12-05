@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { setAuthenticationToken } from '../utils'
 import axios from 'axios'
 import {Link, NavLink} from 'react-router-dom'
+import { connect } from 'react-redux'
+import history from '../history'
 
+class AllBooks extends Component {
 
-export class AllBooks extends Component {
        constructor(props){
          super(props)
          this.state={
@@ -14,18 +16,33 @@ export class AllBooks extends Component {
        }
 
        addBookButton = () =>{
-         this.props.history.push('/add-book')
+         history.push('/add-book')
+
        }
+       // componentWillReceiveProps = (nextprops) => {
+       //   axios.get(`http://localhost:3050/api/getBooks/${this.props.genre}`).then((res)=> {
+       //     if(this._isMounted){
+       //     this.setState({
+       //        books: res.data
+       //        })
+       //      }
+       //        this.props.history.push('/')
+       //   }).catch((error)=>{
+       //     this.props.history.push('/login')
+       //   })
+       //
+       // }
 
-       componentDidMount = ()=>{
+       componentWillMount = ()=>{
+
          let token = localStorage.getItem('jsonwebtoken')
-
          setAuthenticationToken(token)
-         axios.get("http://localhost:3050/api/getBooks").then((res)=> {
-           console.log(res.data)
+         axios.get(this.props.url).then((res)=> {
+
            this.setState({
               books: res.data
               })
+              this.props.history.push('/')
          }).catch((error)=>{
            this.props.history.push('/login')
          })
@@ -79,6 +96,7 @@ export class AllBooks extends Component {
        {books}
 
       </div>
+    
       <button onClick={this.addBookButton} className="addButton btn btn-warning">Add Book</button>
 
       </div>
@@ -87,3 +105,24 @@ export class AllBooks extends Component {
   }
 
 }
+// map global state to local props
+const mapStateToProps = (state) => {
+  return {
+
+  url: state.url //this.props.isAuthenticated
+    //ctr: state.counter // this.props.ctr
+  }
+}
+
+// make the dispatches available on local props
+// dispatch is used to communicate with the reducer
+// so the reducer can change the global state
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // this.props.onIncrementCounter
+
+  }
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(AllBooks)

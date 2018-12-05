@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import {Link, NavLink} from 'react-router-dom'
+import { connect } from 'react-redux'
+import history from '../history';
 
-export class AddBook extends Component {
+class AddBook extends Component {
       constructor(props){
         super(props)
 
@@ -33,7 +36,7 @@ export class AddBook extends Component {
       if(json.success == true) {
       this.props.history.push('/')
     } else {
-      
+
     }
     })
 
@@ -60,9 +63,31 @@ export class AddBook extends Component {
       <option value="Biography">Biography</option>
       </select> <br/>
       <button onClick={this.addButton}>Add Book</button>
+       <Link to="/"><button className="btn btn-warning">Back</button></Link>
 
 </div>
     )
   }
 
 }
+// map global state to local props
+const mapStateToProps = (state) => {
+  return {
+
+  //this.props.isAuthenticated
+    //ctr: state.counter // this.props.ctr
+  }
+}
+
+// make the dispatches available on local props
+// dispatch is used to communicate with the reducer
+// so the reducer can change the global state
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // this.props.onIncrementCounter
+
+  }
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(AddBook)

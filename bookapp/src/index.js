@@ -2,21 +2,28 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import {BrowserRouter, Switch, Route} from 'react-router-dom'
-import {BaseLayout} from './components/BaseLayout'
-import {AddBook} from './components/AddBook'
-import {AllBooks} from './components/AllBooks'
-import {Footer} from './components/Footer'
-import {Header} from './components/Header'
+import {Router, Switch, Route} from 'react-router-dom'
+import BaseLayout from './components/BaseLayout'
+import AddBook from './components/AddBook'
+import AllBooks from './components/AllBooks'
+import Footer from './components/Footer'
+import Header from './components/Header'
 import {UpdateBook} from './components/UpdateBook'
-import {Login} from './components/Login'
+import Login from './components/Login'
 import {Register} from './components/Register'
+import { createStore } from 'redux'
+import reducer from './store/reducer'
+import { Provider } from 'react-redux'
+import history from './history';
+
+let store = createStore(reducer,window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
 ReactDOM.render(
 
-
-  <BrowserRouter>
+  <Provider store = {store}>
+  <Router history={history}>
   <BaseLayout>
+
     <Switch>
       <Route exact path="/" component={AllBooks} />
       <Route path="/login" component={Login}/>
@@ -24,8 +31,10 @@ ReactDOM.render(
       <Route path="/add-book" component={AddBook} />
       <Route path="/update-book/:bookId" component={UpdateBook} />
     </Switch>
+
   </BaseLayout>
-  </BrowserRouter>
+  </Router>
+  </Provider>
 
 
 

@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import {Link, NavLink} from 'react-router-dom'
 import axios from 'axios'
 import { setAuthenticationToken } from '../utils'
+import { connect } from 'react-redux'
 
 
 
-export class Login extends Component {
+class Login extends Component {
   constructor(props){
     super(props)
     this.state={
@@ -41,7 +42,7 @@ export class Login extends Component {
          message : response.data
        })
      }  else {
-
+       this.props.authenticate()
        localStorage.setItem('jsonwebtoken',response.data.token)
      // put the token in the request header
     setAuthenticationToken(response.data.token)
@@ -116,3 +117,22 @@ export class Login extends Component {
   }
 
 }
+// map global state to local props
+const mapStateToProps = (state) => {
+  return {
+    //ctr: state.counter // this.props.ctr
+  }
+}
+
+// make the dispatches available on local props
+// dispatch is used to communicate with the reducer
+// so the reducer can change the global state
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // this.props.onIncrementCounter
+    authenticate: () => dispatch({type: "AUTHENTICATED"})
+  }
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(Login)

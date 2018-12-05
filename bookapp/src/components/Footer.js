@@ -1,24 +1,44 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 
-
-export class Footer extends Component {
+class Footer extends Component {
 
   render() {
+    if(this.props.isAuthenticated == true){
     return (
 
-
-          //
-          // <div className="footer-dark bg-dark text-white footer-container">
-          //     <footer>
-                  <div style={this.props.headerStyle} className="containerfooter">
+                  <div className="containerfooter">
                       <p className="copyright">Copyright© 2018</p>
                   </div>
-          //     </footer>
-          // </div>
-
-
 
     )
+  } else {
+    return (
+      <div>
+      </div>
+    )
+  }
   }
 
 }
+// map global state to local props
+const mapStateToProps = (state) => {
+  return {
+
+    isAuthenticated : state.isAuthenticated //this.props.isAuthenticated
+    //ctr: state.counter // this.props.ctr
+  }
+}
+
+// make the dispatches available on local props
+// dispatch is used to communicate with the reducer
+// so the reducer can change the global state
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // this.props.onIncrementCounter
+
+  }
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(Footer)

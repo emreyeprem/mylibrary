@@ -76,11 +76,19 @@ db.none('INSERT INTO books (booktitle,publisheddate,imageurl,category,author,use
 
 // /api/users/23/books
 
-app.get('/api/getBooks',authenticate,function(req,res){
+app.get('/api/getBooks/:genre',authenticate,function(req,res){
+  let genre = req.params.genre
+  if(genre == "allbooks"){
   db.any('SELECT id,booktitle,publisheddate,imageurl,category,author FROM books WHERE userid = $1',[userId]).then(function(response){
       res.json(response)
 
   })
+} else {
+  db.any('SELECT id,booktitle,publisheddate,imageurl,category,author FROM books WHERE userid = $1 and category=$2',[userId,genre]).then(function(response){
+      res.json(response)
+
+  })
+}
 })
 
 app.delete('/delete-book/:id',function(req,res){
