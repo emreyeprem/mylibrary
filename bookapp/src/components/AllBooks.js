@@ -33,7 +33,7 @@ class AllBooks extends Component {
        //
        // }
 
-       componentWillMount = ()=>{
+       componentDidMount = ()=>{
 
          let token = localStorage.getItem('jsonwebtoken')
          setAuthenticationToken(token)
@@ -96,7 +96,7 @@ class AllBooks extends Component {
        {books}
 
       </div>
-    
+
       <button onClick={this.addBookButton} className="addButton btn btn-warning">Add Book</button>
 
       </div>
