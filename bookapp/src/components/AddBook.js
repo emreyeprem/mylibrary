@@ -21,6 +21,7 @@ class AddBook extends Component {
       })
 
       }
+
       addButton = () =>{
         let bookInfo = this.state.book
         fetch('http://localhost:3050/addBook',{
@@ -62,7 +63,7 @@ class AddBook extends Component {
       <option value="Romance">Romance</option>
       <option value="Biography">Biography</option>
       </select> <br/>
-      <button onClick={this.addButton}>Add Book</button>
+      <button className= "btn btn-primary" onClick={this.addButton}>Add Book</button> <br/><br/>
        <Link to="/"><button className="btn btn-warning">Back</button></Link>
 
 </div>
@@ -74,7 +75,7 @@ class AddBook extends Component {
 const mapStateToProps = (state) => {
   return {
 
-  //this.props.isAuthenticated
+  url: state.url //this.props.isAuthenticated
     //ctr: state.counter // this.props.ctr
   }
 }

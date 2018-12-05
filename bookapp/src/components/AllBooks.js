@@ -16,22 +16,25 @@ class AllBooks extends Component {
        }
 
        addBookButton = () =>{
-         history.push('/add-book')
+         this.props.history.replace('/add-book')
 
        }
-       // componentWillReceiveProps = (nextprops) => {
-       //   axios.get(`http://localhost:3050/api/getBooks/${this.props.genre}`).then((res)=> {
-       //     if(this._isMounted){
-       //     this.setState({
-       //        books: res.data
-       //        })
-       //      }
-       //        this.props.history.push('/')
-       //   }).catch((error)=>{
-       //     this.props.history.push('/login')
-       //   })
-       //
-       // }
+
+       componentWillReceiveProps(props) {
+
+         console.log(this.props.url)
+
+          axios.get(props.url)
+          .then(response => {
+
+              this.setState({
+                books: response.data
+              })
+
+
+          })
+
+       }
 
        componentDidMount = ()=>{
 
@@ -42,7 +45,7 @@ class AllBooks extends Component {
            this.setState({
               books: res.data
               })
-              this.props.history.push('/')
+
          }).catch((error)=>{
            this.props.history.push('/login')
          })
@@ -60,17 +63,20 @@ class AllBooks extends Component {
       books:newarr
     })
     console.log('success')
-    this.props.history.push('/')
+    //this.props.history.push('/')
   })
 }
 
     edit = (bookId)=>{
       console.log(bookId)
-      this.props.history.push(`/update-book/${bookId}`)
+      this.props.history.replace(`/update-book/${bookId}`)
     }
 
 
   render() {
+
+    console.log("render of all books")
+
     let books = this.state.books.map((each)=>{
       return <div className="card">
        <img id="pictures" className="card-img-top" src={each.imageurl} alt="Card image cap" />
@@ -97,7 +103,7 @@ class AllBooks extends Component {
 
       </div>
 
-      <button onClick={this.addBookButton} className="addButton btn btn-warning">Add Book</button>
+    <button onClick={this.addBookButton} className="addButton btn btn-warning">Add Book</button>
 
       </div>
 

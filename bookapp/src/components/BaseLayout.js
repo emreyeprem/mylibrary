@@ -15,6 +15,7 @@ import '../vendor/css-hamburgers/hamburgers.min.css'
 import '../css/util.css'
 import '../css/main.css'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 
 
@@ -29,7 +30,7 @@ import { connect } from 'react-redux'
 class BaseLayout extends Component {
    constructor(props){
      super(props)
-
+     console.log(props)
 
    }
 
@@ -42,7 +43,7 @@ class BaseLayout extends Component {
     return (
 
       <div>
-          <Header/>
+          <Header />
               {this.props.children}
           <Footer/>
 
@@ -54,4 +55,4 @@ class BaseLayout extends Component {
 }
 
 
-export default BaseLayout
+export default withRouter(BaseLayout)

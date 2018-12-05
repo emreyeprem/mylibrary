@@ -22,7 +22,7 @@ ReactDOM.render(
 
   <Provider store = {store}>
   <Router history={history}>
-  <BaseLayout>
+  <BaseLayout >
 
     <Switch>
       <Route exact path="/" component={AllBooks} />

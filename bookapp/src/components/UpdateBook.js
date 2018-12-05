@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { setAuthenticationToken} from '../utils'
 import axios from 'axios'
-
+import {Link, NavLink} from 'react-router-dom'
+import { connect } from 'react-redux'
+import history from '../history'
 
 
 export class UpdateBook extends Component {
@@ -12,6 +14,7 @@ export class UpdateBook extends Component {
 
     }
   }
+
 
   componentDidMount() {
     let token = localStorage.getItem("jsonwebtoken")
@@ -28,6 +31,7 @@ export class UpdateBook extends Component {
     this.setState({
       books:bookToUpdate
     })
+
   })
 }
 
@@ -64,7 +68,7 @@ return response.json()
 }).then((json) => {
 console.log(json)
 if(json.success == true) {
-this.props.history.push('/')
+//this.props.history.push('/')
 } else {
 
 }
@@ -91,10 +95,33 @@ this.props.history.push('/')
       <option value="Romance">Romance</option>
       <option value="Biography">Biography</option>
       </select> <br/>
-      <button onClick={this.sendUpdateReq} className="btn btn-warning">Update the book</button>
+      <a href="http://localhost:3000/"><button onClick={this.sendUpdateReq} className="btn btn-primary">Update the book</button></a>
+      <br/><br/><Link to="/"><button className="btn btn-warning">Back</button></Link>
       </div>
+
 
     )
   }
 
 }
+// map global state to local props
+const mapStateToProps = (state) => {
+  return {
+
+  url: state.url //this.props.isAuthenticated
+    //ctr: state.counter // this.props.ctr
+  }
+}
+
+// make the dispatches available on local props
+// dispatch is used to communicate with the reducer
+// so the reducer can change the global state
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // this.props.onIncrementCounter
+
+  }
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(UpdateBook)

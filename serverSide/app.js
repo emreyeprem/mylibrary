@@ -75,7 +75,12 @@ db.none('INSERT INTO books (booktitle,publisheddate,imageurl,category,author,use
 //-------------------------------
 
 // /api/users/23/books
+app.get('/api/getbooks',function(req,res){
+  db.any('SELECT id,booktitle,publisheddate,imageurl,category,author FROM books WHERE userid = $1',[userId]).then(function(response){
+      res.json(response)
 
+  })
+})
 app.get('/api/getBooks/:genre',authenticate,function(req,res){
   let genre = req.params.genre
   if(genre == "allbooks"){

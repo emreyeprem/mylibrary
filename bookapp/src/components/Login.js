@@ -23,6 +23,9 @@ class Login extends Component {
       }
     })
   }
+  componentDidMount=()=>{
+     this.props.notAuthenticate()
+  }
   sendUserToServer= ()=>{
     let userInfo = this.state.user
    axios.post('http://localhost:3050/login',{
@@ -130,6 +133,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     // this.props.onIncrementCounter
+    notAuthenticate: () => dispatch({type: "NOTAUTHENTICATED"}),
     authenticate: () => dispatch({type: "AUTHENTICATED"})
   }
 }

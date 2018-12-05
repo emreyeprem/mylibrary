@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {button, Navbutton} from 'react-router-dom'
 import { connect } from 'react-redux'
 import history from '../history';
+import { withRouter } from 'react-router-dom'
 
 class Header extends Component {
      constructor(props){
@@ -17,7 +18,9 @@ history.push('/login')
 
      }
      selectedGenre = (e) =>{
+       console.log(e.target.value)
        this.props.genre(e.target.value)
+       this.props.history.replace('/')
      }
 
 render() {
@@ -25,11 +28,11 @@ render() {
     return (
 
       <nav className="navbar navbar-light bg-dark justify-content-between text-white">
-        <button onClick={this.selectedGenre} value="allbooks" className="navbar-brand">My Library</button>
-        <button onClick={this.selectedGenre} value="Romance" className="navbar-brand category">Romance</button>
-        <button onClick={this.selectedGenre} value="Fiction" className="navbar-brand category">Fiction</button>
-        <button onClick={this.selectedGenre} value="Technical" className="navbar-brand category">Technical</button>
-        <button onClick={this.selectedGenre} value="Biography" className="navbar-brand category">Biography</button>
+        <button onClick={this.selectedGenre} value="allbooks" className="navbar-brand text-white">My Library</button>
+        <button onClick={this.selectedGenre} value="Romance" className="navbar-brand category text-white">Romance</button>
+        <button onClick={this.selectedGenre} value="Fiction" className="navbar-brand category text-white">Fiction</button>
+        <button onClick={this.selectedGenre} value="Technical" className="navbar-brand category text-white">Technical</button>
+        <button onClick={this.selectedGenre} value="Biography" className="navbar-brand category text-white">Biography</button>
         <form className="form-inline">
           <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"/>
           <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -69,4 +72,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(Header)
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Header))
